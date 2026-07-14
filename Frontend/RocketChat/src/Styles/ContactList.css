@@ -1,0 +1,36 @@
+.contact-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f9fa;
+  height: 100vh;
+  width: 30%;
+  gap: 5px;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.contact-list-wrapper:hover{
+  cursor: pointer;
+}
+
+.receiver-div {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  display: flex;
+  flex-direction: row;
+  height: 10%;
+  border: 1px solid #f1f5f9;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 
+                0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  align-items: center;
+  justify-content: space-around;
+}
+
+.username-message-div{
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  justify-content: space-around;
+  flex-grow: 1;
+}

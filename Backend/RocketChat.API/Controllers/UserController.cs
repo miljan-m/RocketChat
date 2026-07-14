@@ -59,6 +59,5 @@ namespace RocketChat.API.Controllers
             return null;
         }
 
-
     }
 }

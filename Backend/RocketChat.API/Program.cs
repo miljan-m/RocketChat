@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
+using RocketChat.API.Hubs;
 using RocketChat.Application.Interfaces;
 using RocketChat.Application.Services;
 using RocketChat.Infrastructure;
@@ -17,14 +18,14 @@ builder.Services.AddDbContext<DBContext>(options =>
     var ConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     options.UseSqlServer(ConnectionString);
 });
-builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
+builder.Services.AddIdentityApiEndpoints<ApplicationUser>(options =>
 {
     options.SignIn.RequireConfirmedEmail = false;
     options.SignIn.RequireConfirmedAccount = false;
     options.SignIn.RequireConfirmedPhoneNumber = false;
 
 }).AddEntityFrameworkStores<DBContext>().AddApiEndpoints();
-builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
+builder.Services.AddAuthorization();
 
 
 builder.Services.AddScoped<IUserService, UserService>();
@@ -43,17 +44,8 @@ builder.Services.AddCors(options =>
             .AllowCredentials()
         );
 });
-
+builder.Services.AddSignalR();
 var app = builder.Build();
-app.Use(async (context, next) =>
-{
-    if (context.Request.Path == "/login" && context.Request.Method == "POST")
-    {
-        // Omogućava čitanje body-ja više puta za logovanje
-        context.Request.EnableBuffering();
-    }
-    await next();
-});
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -69,7 +61,7 @@ app.UseCors("ReactApp");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapIdentityApi<ApplicationUser>();
-
+app.MapHub<ChatHub>("/chat");
 app.MapControllers();
 
 app.Run();

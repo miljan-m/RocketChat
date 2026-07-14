@@ -19,7 +19,7 @@ namespace RocketChat.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<CreateUserDTO> CreateUser(CreateUserDTO createUserDTO)
+        public async Task<CreateUserDTO?> CreateUser(CreateUserDTO createUserDTO)
         {
             var result = await _userManager.CreateAsync(_mapper.Map<ApplicationUser>(createUserDTO), createUserDTO.Password);
             if (result.Succeeded) return createUserDTO;
@@ -52,9 +52,19 @@ namespace RocketChat.Application.Services
             return _mapper.Map<GetUserDTO>(result);
         }
 
+        public async Task<string?> GetUserIdByUserName(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            return user?.Id.ToString();
+
+        }
+
         public Task<UpdateUserDTO> UpdateUser(Guid Id, UpdateUserDTO updateUserDTO)
         {
             throw new NotImplementedException();
         }
+
+
+
     }
 }

@@ -13,5 +13,7 @@ namespace RocketChat.Application.Interfaces
 
         public Task<UpdateUserDTO> UpdateUser(Guid Id, UpdateUserDTO updateUserDTO);
 
+        public Task<string?> GetUserIdByUserName(string username);
+
     }
 }
