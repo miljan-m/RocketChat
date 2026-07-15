@@ -64,6 +64,12 @@ namespace RocketChat.Application.Services
             throw new NotImplementedException();
         }
 
+        public async Task<GetUserDTO> GetUserByUserName(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username) ?? throw new Exception();
+            return _mapper.Map<GetUserDTO>(user);
+        }
+
 
 
     }

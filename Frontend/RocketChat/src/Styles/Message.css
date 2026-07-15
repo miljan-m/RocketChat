@@ -1,0 +1,19 @@
+.message-wrapper{
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    width: max-content;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 10px;
+}
+.message-text{
+    background-color: aqua;
+    border-radius: 3px;
+    box-sizing: border-box;
+    padding: 10px;
+}
+.whole-message{
+    display: flex;
+    flex-direction: column;
+}

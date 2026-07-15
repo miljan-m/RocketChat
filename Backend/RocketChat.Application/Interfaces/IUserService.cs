@@ -15,5 +15,7 @@ namespace RocketChat.Application.Interfaces
 
         public Task<string?> GetUserIdByUserName(string username);
 
+        public Task<GetUserDTO> GetUserByUserName(string username);
+
     }
 }

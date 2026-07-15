@@ -17,7 +17,10 @@ import AppTheme from '../shared-theme/AppTheme';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from '../components/CustomIcons';
 import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, Form } from 'react-router-dom';
+import { useContext } from 'react';
+import LoginProvider from '../Provider/LoginProvider';
+import { LoginContext } from '../Context/LoginContext';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -69,6 +72,8 @@ export default function SignIn(props) {
   const [open, setOpen] = React.useState(false);
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
   const navigate = useNavigate()
+  const { user, HandleLogin } = useContext(LoginContext)
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -77,23 +82,17 @@ export default function SignIn(props) {
     setOpen(false);
   };
 
-  const handleSubmit = (event) => {
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (emailError || passwordError) {
       event.preventDefault();
       return;
     }
-    const data = new FormData(event.currentTarget);
-    try {
-      const response = axios.post(`${baseUrl}/login`, {
-        email: data.get('email'),
-        password: data.get('password')
-
-      })
-      navigate('/chat')
-    } catch (error) {
-      console.log(error)
-    }
+    var data = new FormData(event.currentTarget)
+    const email = data.get('email')
+    const password = data.get('password')
+    HandleLogin(email, password)
   };
 
   const validateInputs = () => {

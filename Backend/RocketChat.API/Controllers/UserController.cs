@@ -59,5 +59,12 @@ namespace RocketChat.API.Controllers
             return null;
         }
 
+        [HttpGet("username/{username}")]
+        public async Task<ActionResult<GetUserDTO>> GetUserByUserName([FromRoute] string username)
+        {
+            var user = await _userService.GetUserByUserName(username);
+            return user;
+        }
+
     }
 }

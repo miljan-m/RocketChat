@@ -5,16 +5,18 @@ import '../Styles/Message.css'
 const Message = ({ message }) => {
     return (
         <div className="message-wrapper">
-            <Avatar />
-            <div className="message-text">
-                {
-                    message.message
-                }
+            <Avatar style={{ cursor: 'pointer' }} />
+            <div className='whole-message'>
+                {message.username}
+                <div className="message-text">
+                    {
+                        message.message
+                    }
 
-                {
-                    (new Date().toLocaleTimeString())
-                }
-
+                    {
+                        (new Date().toLocaleTimeString())
+                    }
+                </div>
             </div>
         </div>
     )

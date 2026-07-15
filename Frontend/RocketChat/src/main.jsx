@@ -4,11 +4,14 @@ import SignUp from './Pages/SignUp.jsx'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import SignIn from './Pages/SignIn.jsx'
 import App from './app.jsx'
+import LoginProvider from './Provider/LoginProvider.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <LoginProvider>
+        <App />
+      </LoginProvider>
     </BrowserRouter>
   </StrictMode>,
 )

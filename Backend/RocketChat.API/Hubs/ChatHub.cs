@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using RocketChat.Application.Interfaces;
 
 namespace RocketChat.API.Hubs
 {
+    [Authorize]
     public class ChatHub : Hub
     {
         private readonly IUserService _userService;

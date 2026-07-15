@@ -6,6 +6,7 @@ using RocketChat.Application.Interfaces;
 using RocketChat.Application.Services;
 using RocketChat.Infrastructure;
 using RocketChat.Infrastructure.Persistance;
+using Microsoft.AspNetCore.Authentication.BearerToken;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -25,6 +26,24 @@ builder.Services.AddIdentityApiEndpoints<ApplicationUser>(options =>
     options.SignIn.RequireConfirmedPhoneNumber = false;
 
 }).AddEntityFrameworkStores<DBContext>().AddApiEndpoints();
+
+builder.Services.Configure<BearerTokenOptions>(IdentityConstants.BearerScheme, options =>
+{
+    options.Events = new BearerTokenEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.HttpContext.Request.Query["access_token"];
+            var path = context.HttpContext.Request.Path;
+            if (!string.IsNullOrEmpty(accessToken) &&
+                path.StartsWithSegments("/chat"))
+            {
+                context.Token = accessToken;
+            }
+            return Task.CompletedTask;
+        }
+    };
+});
 builder.Services.AddAuthorization();
 
 

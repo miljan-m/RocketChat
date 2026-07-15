@@ -1,16 +1,22 @@
+.contact-list-main-wrapper {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  justify-content: space-between;
+  width: 30%;
+}
+.contact-list-main-wrapper button {
+  border: none;
+  background-color: #f8f9fa;
+}
 .contact-list-wrapper {
   display: flex;
   flex-direction: column;
   background-color: #f8f9fa;
   height: 100vh;
-  width: 30%;
   gap: 5px;
   box-sizing: border-box;
   padding: 10px;
-}
-
-.contact-list-wrapper:hover{
-  cursor: pointer;
 }
 
 .receiver-div {
@@ -20,14 +26,18 @@
   flex-direction: row;
   height: 10%;
   border: 1px solid #f1f5f9;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 
-                0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  box-shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.05),
+    0 8px 10px -6px rgba(0, 0, 0, 0.05);
   align-items: center;
   justify-content: space-around;
 }
 
-.username-message-div{
+.receiver-div:hover {
+  cursor: pointer;
+}
+.username-message-div {
   display: flex;
   flex-direction: row;
   box-sizing: border-box;

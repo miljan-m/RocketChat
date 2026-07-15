@@ -20,7 +20,7 @@
   padding: 10px;
 }
 
-.attachment-sendbutton-div > svg:hover {
+button:hover{
   cursor: pointer;
 }
 
@@ -29,4 +29,5 @@ textarea {
   height: 80%;
   resize: none;
   box-sizing: border-box;
+  border: none;
 }
