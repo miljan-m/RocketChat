@@ -7,12 +7,34 @@
     align-items: flex-end;
     gap: 10px;
 }
+
+.left-message-wrapper {
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    width: max-content;
+    align-items: flex-end;
+    gap: 10px;
+    align-self: flex-start;
+}
+
+.right-message-wrapper {
+    display: flex;
+    flex-direction: row-reverse;
+    box-sizing: border-box;
+    width: max-content;
+    align-items: flex-end;
+    gap: 10px;
+    align-self: flex-end;
+}
+
 .message-text{
     background-color: aqua;
     border-radius: 3px;
     box-sizing: border-box;
     padding: 10px;
 }
+
 .whole-message{
     display: flex;
     flex-direction: column;

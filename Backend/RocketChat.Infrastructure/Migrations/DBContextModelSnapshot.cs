@@ -153,6 +153,33 @@ namespace RocketChat.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("RocketChat.Domain.Models.Message", b =>
+                {
+                    b.Property<Guid>("MessageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("MessageText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReceiverUsername")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("SenderUsername")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("MessageId");
+
+                    b.HasIndex("ReceiverUsername");
+
+                    b.HasIndex("SenderUsername");
+
+                    b.ToTable("Message");
+                });
+
             modelBuilder.Entity("RocketChat.Infrastructure.ApplicationUser", b =>
                 {
                     b.Property<Guid>("Id")
@@ -215,6 +242,7 @@ namespace RocketChat.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -280,6 +308,30 @@ namespace RocketChat.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("RocketChat.Domain.Models.Message", b =>
+                {
+                    b.HasOne("RocketChat.Infrastructure.ApplicationUser", null)
+                        .WithMany("ReceivedMessages")
+                        .HasForeignKey("ReceiverUsername")
+                        .HasPrincipalKey("UserName")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("RocketChat.Infrastructure.ApplicationUser", null)
+                        .WithMany("SentMessages")
+                        .HasForeignKey("SenderUsername")
+                        .HasPrincipalKey("UserName")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RocketChat.Infrastructure.ApplicationUser", b =>
+                {
+                    b.Navigation("ReceivedMessages");
+
+                    b.Navigation("SentMessages");
                 });
 #pragma warning restore 612, 618
         }

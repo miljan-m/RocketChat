@@ -1,17 +1,21 @@
-import React, { use, useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useEffectEvent, useState } from 'react'
 import ContactList from '../components/ContactList'
 import ReceiverDiv from '../components/ReceiverDiv'
 import MessageSendBox from '../components/MessageSendBox'
 import Conversation from '../components/Conversation'
 import '../Styles/ChatPage.css'
 import { HubConnectionBuilder } from '@microsoft/signalr'
-import {LoginContext} from '../Context/LoginContext'
+import { LoginContext } from '../Context/LoginContext'
+import axios from 'axios'
 
 const ChatPage = () => {
   const [connection, setConnection] = useState()
   const [receiverUsername, setReceiverUsername] = useState()
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
   const { user, HandleLogin } = useContext(LoginContext)
+  const [receiver, setReceiver] = useState()
+  const [currentMessages, setCurrentMessages] = useState([])
+  const [allMessages, setAllMesages] = useState([])
 
   useEffect(() => {
 
@@ -36,9 +40,30 @@ const ChatPage = () => {
 
   }, [connection])
 
+  const fetchMessages = async () => {
+    try {
+      const result = await axios.get(`${baseUrl}/message`)
+      const messages = result?.data || []
+      setAllMesages(messages)
+      if (receiver?.userName) {
+        const filtered = messages.filter(
+          message => message.receiverUsername === receiver.userName
+        )
+        setCurrentMessages(filtered)
+      }
+    } catch (error) {
+
+    }
+  }
+  useEffect(() => {
+    fetchMessages()
+  }, [receiver])
+
+
   const SendMessage = async (message, username) => {
     try {
-      await connection.invoke("SendMessage", message, username)
+      await connection.invoke("SendMessage", message, username, user.userName)
+      fetchMessages()
     } catch (error) {
       console.log(error)
     }
@@ -46,10 +71,10 @@ const ChatPage = () => {
 
   return (
     <div className="chat-wrapper">
-      <ContactList />
+      <ContactList setReceiverUp={setReceiver} />
       <div className="conversation-div">
         <ReceiverDiv />
-        <Conversation />
+        <Conversation messages={currentMessages} />
         <MessageSendBox sendMessage={SendMessage} />
       </div>
     </div>

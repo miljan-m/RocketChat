@@ -4,6 +4,7 @@ namespace RocketChat.Application.DTOs.UserDTOs
     (
         string FirstName,
         string LastName,
+        string UserName,
         string Email,
         string PhoneNumber,
         string Address

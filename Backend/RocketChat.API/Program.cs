@@ -7,12 +7,18 @@ using RocketChat.Application.Services;
 using RocketChat.Infrastructure;
 using RocketChat.Infrastructure.Persistance;
 using Microsoft.AspNetCore.Authentication.BearerToken;
+using RocketChat.Application.Repositories;
+using RocketChat.Infrastructure.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddScoped<IMessageService, MessageService>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+
 
 builder.Services.AddDbContext<DBContext>(options =>
 {
