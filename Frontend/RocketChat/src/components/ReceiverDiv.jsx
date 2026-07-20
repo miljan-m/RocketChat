@@ -2,15 +2,17 @@ import React from 'react'
 import '../Styles/ReceiverDiv.css'
 import Avatar from '@mui/material/Avatar'
 
-const ReceiverDiv = () => {
+const ReceiverDiv = ({ receiver }) => {
 
-    var contacts = { fullName: 'Miljan Mitic', lastMessage: 'ovo je zadnja poruka' }
 
     return (
-        <div className="receiver-div-wrapper">
-            <span>{contacts.fullName}</span>
-            <Avatar style={{cursor:'pointer'}}>{contacts.fullName.charAt(0)}</Avatar>
-        </div>
+
+        receiver && (<div className="receiver-div-wrapper">
+            < span > {receiver.userName}</span >
+            <Avatar style={{ cursor: 'pointer' }}>{receiver.userName.charAt(0)}</Avatar>
+        </div >)
+
+
     )
 }
 

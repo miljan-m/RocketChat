@@ -3,14 +3,26 @@ import '../Styles/MessageSendBox.css'
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import SendIcon from '@mui/icons-material/Send';
 
-const MessageSendBox = ({ sendMessage }) => {
+const MessageSendBox = ({ sendMessage, receiver }) => {
   const [messageText, setMessageText] = useState('')
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      send()
+      setMessageText("")
+    }
+  }
+  const send = () => {
+    sendMessage(messageText, receiver.userName)
+
+  }
   return (
     <div className="message-send-box-wrapper" >
-      <textarea name="" id="" placeholder='Message...' onChange={(e) => setMessageText(e.target.value)}></textarea>
+      <textarea name="" id="textarea" value={messageText} placeholder='Message...' onChange={(e) => setMessageText(e.target.value)} onKeyDown={handleKeyDown}></textarea>
       <div className="attachment-sendbutton-div">
         <AttachFileIcon color='primary' />
-        <button style={{ border: 'none' }} onClick={() => sendMessage(messageText, "anat")}>
+        <button style={{ border: 'none' }} onClick={() => sendMessage(messageText, receiver.userName)} >
           <SendIcon color='primary' />
         </button>
       </div>

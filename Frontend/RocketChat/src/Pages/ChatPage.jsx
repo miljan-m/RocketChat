@@ -27,18 +27,12 @@ const ChatPage = () => {
       .build()
 
     setConnection(newConnection)
-
-  }, [])
-
-  useEffect(() => {
-
-    if (connection) connection.start().then(() => {
-      connection.on("ReceivePrivateMessage", (message) => {
-        console.log(message)
-      })
+    newConnection.start()
+    newConnection.on("ReceivePrivateMessage", (userIdentifier, message) => {
+      fetchMessages()
     })
+  }, [receiver])
 
-  }, [connection])
 
   const fetchMessages = async () => {
     try {
@@ -47,7 +41,7 @@ const ChatPage = () => {
       setAllMesages(messages)
       if (receiver?.userName) {
         const filtered = messages.filter(
-          message => message.receiverUsername === receiver.userName
+          message => message.receiverUsername === receiver.userName || message.senderUsername === receiver.userName
         )
         setCurrentMessages(filtered)
       }
@@ -55,6 +49,7 @@ const ChatPage = () => {
 
     }
   }
+
   useEffect(() => {
     fetchMessages()
   }, [receiver])
@@ -73,9 +68,9 @@ const ChatPage = () => {
     <div className="chat-wrapper">
       <ContactList setReceiverUp={setReceiver} />
       <div className="conversation-div">
-        <ReceiverDiv />
+        <ReceiverDiv receiver={receiver} />
         <Conversation messages={currentMessages} />
-        <MessageSendBox sendMessage={SendMessage} />
+        <MessageSendBox sendMessage={SendMessage} receiver={receiver} />
       </div>
     </div>
   )

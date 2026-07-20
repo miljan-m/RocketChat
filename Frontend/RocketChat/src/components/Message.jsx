@@ -1,11 +1,12 @@
 import Avatar from '@mui/material/Avatar'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import '../Styles/Message.css'
 import { LoginContext } from '../Context/LoginContext'
 
 const Message = ({ message }) => {
     const { user } = useContext(LoginContext)
 
+    
     return (
         (user.userName == message.receiverUsername ?
             <div className="left-message-wrapper">
@@ -26,7 +27,6 @@ const Message = ({ message }) => {
             <div className="right-message-wrapper">
                 <Avatar style={{ cursor: 'pointer' }} />
                 <div className='whole-message'>
-                    {message.receiverUsername || message.senderUsername}
                     <div className="message-text">
                         {
                             message.messageText

@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import '../Styles/ContactList.css'
 import Avatar from '@mui/material/Avatar'
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import '../Styles/Popup.css'
 import axios from 'axios'
+import { LoginContext } from '../Context/LoginContext';
 
 const ContactList = ({ setReceiverUp }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [receiverUsername, setReceiverUsername] = useState()
-    const [receiver, setReceiver] = useState([])
-    const [currentReceiver, setCurrentReceiver] = useState()
+    const [receivers, setReceivers] = useState([])
     const baseUrl = import.meta.env.VITE_API_BASE_URL;
+    const { user } = useContext(LoginContext)
+    const logedUser = user;
 
     const openClosePopup = () => {
         setIsOpen(!isOpen)
@@ -18,17 +20,28 @@ const ContactList = ({ setReceiverUp }) => {
 
     useEffect(() => {
         const fetchReceivers = async () => {
-            const messages = await axios.get(`${baseUrl}/message`)//izvlacim sve poruke
-            const uniqueReceiverMessages = Array.from(
-                new Map(messages.data.map(message => [message.receiverUsername, message])).values()
-            )//filtriram poruke sa unique username
-            const users = await axios.get(`${baseUrl}/user`)//izvlacim sve korisnike
-            const filteredUsers = users.data.filter(user =>
-                uniqueReceiverMessages.some(message =>
-                    message.receiverUsername === user.userName
-                )
+            const messages = await axios.get(`${baseUrl}/message`)
+
+            // uzmi samo poruke u kojima ulogovani korisnik učestvuje (kao sender ili receiver)
+            const myMessages = messages.data.filter(message =>
+                message?.senderUsername === logedUser?.userName ||
+                message?.receiverUsername === logedUser?.userName
             )
-            setReceiver(filteredUsers)
+
+            // za svaku poruku izvuci "drugu stranu" (onog ko nije ulogovani korisnik)
+            const otherUsernames = myMessages.map(message =>
+                message.senderUsername === logedUser.userName
+                    ? message.receiverUsername
+                    : message.senderUsername
+            )
+
+            const uniqueUsernames = Array.from(new Set(otherUsernames))
+
+            const users = await axios.get(`${baseUrl}/user`)
+            const filteredUsers = users.data.filter(user =>
+                uniqueUsernames.includes(user.userName)
+            )
+            setReceivers(filteredUsers)
         }
         fetchReceivers()
     }, [])
@@ -36,7 +49,7 @@ const ContactList = ({ setReceiverUp }) => {
     const addConversation = async (username) => {
         try {
             var result = await axios.get(`${baseUrl}/user/username/${username}`)
-            setReceiver([...receiver, result.data])
+            setReceivers([...receivers, result.data])
             setReceiverUp(result.data)
             setIsOpen(!isOpen)
         } catch (error) {
@@ -47,7 +60,7 @@ const ContactList = ({ setReceiverUp }) => {
         <div className="contact-list-main-wrapper">
             <div className="contact-list-wrapper">
                 {
-                    receiver.length > 0 && receiver.map(receiver => (
+                    receivers.length > 0 && receivers.map(receiver => (receiver.userName != logedUser.userName &&
                         <div className='receiver-div' onClick={() => setReceiverUp(receiver)}>
                             <Avatar>{receiver?.userName.charAt(0)}</Avatar>
                             <div className='username-message-div'>
