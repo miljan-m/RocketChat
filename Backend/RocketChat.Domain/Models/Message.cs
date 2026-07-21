@@ -8,6 +8,7 @@ namespace RocketChat.Domain.Models
         public string MessageText { get; set; }
         public string SenderUsername { get; set; }
         public string ReceiverUsername { get; set; }
+        public DateTime DateTime { get; set; } = DateTime.Now;
         public Message()
         {
         }

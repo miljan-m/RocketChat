@@ -41,7 +41,8 @@ const ChatPage = () => {
       setAllMesages(messages)
       if (receiver?.userName) {
         const filtered = messages.filter(
-          message => message.receiverUsername === receiver.userName || message.senderUsername === receiver.userName
+          message => (message.receiverUsername === receiver.userName || message.senderUsername === receiver.userName) &&
+            (message.receiverUsername === user.userName || message.senderUsername === user.userName)
         )
         setCurrentMessages(filtered)
       }

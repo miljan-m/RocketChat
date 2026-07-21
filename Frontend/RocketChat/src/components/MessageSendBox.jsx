@@ -15,14 +15,14 @@ const MessageSendBox = ({ sendMessage, receiver }) => {
   }
   const send = () => {
     sendMessage(messageText, receiver.userName)
-
+    setMessageText("")
   }
   return (
     <div className="message-send-box-wrapper" >
       <textarea name="" id="textarea" value={messageText} placeholder='Message...' onChange={(e) => setMessageText(e.target.value)} onKeyDown={handleKeyDown}></textarea>
       <div className="attachment-sendbutton-div">
         <AttachFileIcon color='primary' />
-        <button style={{ border: 'none' }} onClick={() => sendMessage(messageText, receiver.userName)} >
+        <button style={{ border: 'none' }} onClick={() => send()} >
           <SendIcon color='primary' />
         </button>
       </div>

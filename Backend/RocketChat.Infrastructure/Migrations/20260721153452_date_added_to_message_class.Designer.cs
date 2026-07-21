@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RocketChat.Infrastructure.Persistance;
 
@@ -11,9 +12,11 @@ using RocketChat.Infrastructure.Persistance;
 namespace RocketChat.Infrastructure.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20260721153452_date_added_to_message_class")]
+    partial class date_added_to_message_class
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,9 +161,6 @@ namespace RocketChat.Infrastructure.Migrations
                     b.Property<Guid>("MessageId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("MessageText")
                         .IsRequired()

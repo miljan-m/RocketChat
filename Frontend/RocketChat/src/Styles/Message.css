@@ -18,6 +18,7 @@
     align-items: flex-end;
     gap: 10px;
     align-self: flex-start;
+    margin-bottom: 5px;
 }
 
 .right-message-wrapper {
@@ -29,6 +30,7 @@
     align-items: flex-end;
     gap: 10px;
     align-self: flex-end;
+    margin-bottom: 5px;
 }
 
 .message-text {
@@ -59,4 +61,35 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
+}
+
+.message-time {
+    font-size: 11px;
+    color: #94a3b8;
+    padding: 0 4px;
+    opacity: 0;
+    max-height: 0;
+    animation: fadeInTime 0.15s ease-out forwards;
+    user-select: none;
+}
+
+@keyframes fadeInTime {
+    from {
+        opacity: 0;
+        transform: translateY(-2px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.left-message-wrapper .message-time {
+    align-self: flex-start;
+    color: #64748b;
+}
+
+.right-message-wrapper .message-time {
+    align-self: flex-end;
+    color: #94a3b8;
 }
