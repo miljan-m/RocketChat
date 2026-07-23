@@ -2,9 +2,14 @@ import React, { useContext, useEffect, useState } from 'react'
 import '../Styles/ContactList.css'
 import Avatar from '@mui/material/Avatar'
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
+import SettingsIcon from '@mui/icons-material/Settings';
 import '../Styles/Popup.css'
 import axios from 'axios'
 import { LoginContext } from '../Context/LoginContext';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import ArchiveIcon from '@mui/icons-material/Archive';
+import LogoutIcon from '@mui/icons-material/Logout';
+
 
 const ContactList = ({ setReceiverUp }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -12,6 +17,7 @@ const ContactList = ({ setReceiverUp }) => {
     const [receivers, setReceivers] = useState([])
     const baseUrl = import.meta.env.VITE_API_BASE_URL;
     const { user } = useContext(LoginContext)
+    const [areOptionsOpen, setOptionsOpen] = useState(false)
     const logedUser = user;
 
     const openClosePopup = () => {
@@ -59,9 +65,20 @@ const ContactList = ({ setReceiverUp }) => {
     return (
         <div className="contact-list-main-wrapper">
             <div className="contact-list-wrapper">
-                {
-                    receivers.length > 0 && receivers.map(receiver => (receiver.userName != logedUser.userName &&
-                        <div className='receiver-div' onClick={() => setReceiverUp(receiver)}>
+                {areOptionsOpen == true ?
+                    <div className='options-div-contact-list'>
+                        <div className="avatar-and-name-div">
+                            <Avatar>{logedUser.userName.charAt(0)}</Avatar>
+                            <span>{logedUser.firstName + " " + logedUser.lastName}</span>
+                        </div>
+                        <div className="settings-div">
+                            <button><ManageAccountsIcon color='primary' /> Account</button>
+                            <button><ArchiveIcon color='primary' />Archive</button>
+                            <button><LogoutIcon color='primary'/>Logout</button>
+                        </div>
+                    </div> :
+                    receivers.length > 0 && receivers.map((receiver, index) => (receiver.userName != logedUser.userName &&
+                        <div key={index} className='receiver-div' onClick={() => setReceiverUp(receiver)}>
                             <Avatar>{receiver?.userName.charAt(0)}</Avatar>
                             <div className='username-message-div'>
                                 <span>{receiver?.userName}</span>
@@ -70,7 +87,10 @@ const ContactList = ({ setReceiverUp }) => {
                     ))
                 }
             </div>
-            <button onClick={() => openClosePopup()}><ControlPointIcon color='primary' /></button>
+            <div className="buttons-div">
+                <button onClick={() => openClosePopup()}><ControlPointIcon color='primary' /></button>
+                <button onClick={() => setOptionsOpen(!areOptionsOpen)}><SettingsIcon color='primary' /></button>
+            </div>
             {isOpen ? (<div
                 className="new-chat-overlay"
                 onClick={(e) => e.target === e.currentTarget && closePopup()}

@@ -34,6 +34,22 @@ const ChatPage = () => {
   }, [receiver])
 
 
+  const handleDeleteConversation = async () => {
+    try {
+      await axios.delete(`${baseUrl}/message`,
+        {
+          params: {
+            receiverUsername: receiver.userName,
+            senderUsername: user.userName
+          }
+        })
+        fetchMessages()
+        setReceiver(null)
+    } catch (error) {
+
+    }
+  }
+
   const fetchMessages = async () => {
     try {
       const result = await axios.get(`${baseUrl}/message`)
@@ -69,7 +85,7 @@ const ChatPage = () => {
     <div className="chat-wrapper">
       <ContactList setReceiverUp={setReceiver} />
       <div className="conversation-div">
-        <ReceiverDiv receiver={receiver} />
+        <ReceiverDiv receiver={receiver} handleDeleteConversation={handleDeleteConversation} />
         <Conversation messages={currentMessages} />
         <MessageSendBox sendMessage={SendMessage} receiver={receiver} />
       </div>

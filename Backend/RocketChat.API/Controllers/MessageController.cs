@@ -1,3 +1,4 @@
+using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Mvc;
 using RocketChat.Application.Interfaces;
 using RocketChat.Domain.Models;
@@ -29,6 +30,17 @@ namespace RocketChat.API.Controllers
         {
             await _messageService.SaveMessage(message);
             return Ok();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteConversation([FromQuery] string receiverUsername, [FromQuery] string senderUsername)
+        {
+
+            var result = await _messageService.DeleteConversation(receiverUsername, senderUsername);
+
+            if (result) return Ok();
+            else return NotFound();
+
         }
 
     }

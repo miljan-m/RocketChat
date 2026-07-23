@@ -12,6 +12,11 @@ namespace RocketChat.Application.Services
             _messageRepository = messageRepository;
         }
 
+        public async Task<bool> DeleteConversation(string receiverUsername, string senderUsername)
+        {
+            return await _messageRepository.DeleteConversation(receiverUsername, senderUsername);
+        }
+
         public async Task<IEnumerable<Message>> GetAllMessages()
         {
             var messages = await _messageRepository.GetAllMessages();

@@ -8,5 +8,7 @@ namespace RocketChat.Application.Repositories
         public Task<IEnumerable<Message>> GetAllMessages();
         public Task<bool> SaveMessage(Message message);
 
+        public Task<bool> DeleteConversation(string receiverUsername,string senderUsername);
+
     }
 }
